@@ -50,20 +50,34 @@ public class MoveCam : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(horizontal, 0.0f, vertical) * moveSpeed * Time.deltaTime * transform.position.y / 2.0f;
-        Vector3 newPosition = transform.position + movement;
+        Vector3 movement = new Vector3(horizontal, 0.0f, vertical) * moveSpeed * Time.deltaTime * Mathf.Sqrt(transform.position.y / 3.0f);
+
+        // Déplacement des caméras avec les touches du clavier (ZQSD) (en fait en WASD ici car Unity lance par défaut un clavier anglais... je verrai plus tard la modification)
+        float moveUp = Input.GetKey("w") ? 1.0f : 0.0f;
+        float moveDown = Input.GetKey("s") ? -1.0f : 0.0f;
+        float moveLeft = Input.GetKey("a") ? -1.0f : 0.0f;
+        float moveRight = Input.GetKey("d") ? 1.0f : 0.0f;
+
+        Vector3 directionalMovement = new Vector3(moveLeft + moveRight, 0.0f, moveUp + moveDown) * moveSpeed * Time.deltaTime * Mathf.Sqrt(transform.position.y / 3.0f);
+        Vector3 newPosition = transform.position + movement + directionalMovement;
 
         // Limiter la position aux bords du plan
         newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
-        newPosition.x = Mathf.Clamp(newPosition.x, minX + newPosition.y * tanFieldAngleX, maxX - newPosition.y * tanFieldAngleX);
-        newPosition.z = Mathf.Clamp(newPosition.z, minZ + newPosition.y * tanFieldAngleZ, maxZ - newPosition.y * tanFieldAngleZ);
+        newPosition.x = Mathf.Clamp(newPosition.x, minX + newPosition.y * tanFieldAngleZ, maxX);
+        newPosition.z = Mathf.Clamp(newPosition.z, minZ - newPosition.y * tanFieldAngleZ, maxZ);
 
         transform.position = newPosition;
 
         // Zoom avec la molette de la souris
         float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
         Vector3 zoom = new Vector3(0.0f, scrollWheel * zoomSpeed, 0.0f);
-        Vector3 newZoomPosition = transform.position - zoom;
+
+        // Zoom avec les touches A et E
+        float fly = Input.GetKey("e") ? 1.0f : 0.0f;
+        float fall = Input.GetKey("q") ? -1.0f : 0.0f;
+
+        Vector3 verticalMovement = new Vector3(0.0f, fly + fall, 0.0f) * moveSpeed * Time.deltaTime * Mathf.Sqrt(transform.position.y / 3.0f);
+        Vector3 newZoomPosition = transform.position - zoom + verticalMovement;
 
         // Limiter la position aux bords du plan lors du zoom
         newZoomPosition.y = Mathf.Clamp(newZoomPosition.y, minY, maxY);
