@@ -20,19 +20,6 @@ public class MoveCam : MonoBehaviour
         Bounds planeBounds = planeRenderer.bounds;
         Texture texture = planeRenderer.material.mainTexture;
         Vector3 planeScale = new Vector3(texture.width / 100.0f, 1.0f, texture.height / 100.0f);
-        /*float halfPlaneWidth = planeRenderer.bounds.size.x / 2.0f;
-        float halfPlaneLength = planeRenderer.bounds.size.z / 2.0f;
-
-
-        /*minX = plane.position.x - halfPlaneWidth; // a priori, le plan est centré en 0, mais au cas où... #sécurité
-        maxX = plane.position.x + halfPlaneWidth;
-        minZ = plane.position.z - halfPlaneLength;
-        maxZ = plane.position.z + halfPlaneLength;
-        minY = plane.position.y + minYMultiplier; // un peu arbitraire
-        tanFieldAngleZ = Mathf.Tan(Camera.main.fieldOfView / 2.0f);
-        tanFieldAngleX = Mathf.Tan(Camera.VerticalToHorizontalFieldOfView(Camera.main.fieldOfView, (float)Screen.width / Screen.height) / 2.0f);
-        maxY = Math.Max(halfPlaneLength / tanFieldAngleZ, halfPlaneWidth / tanFieldAngleX);// * minYMultiplier; // Dépend de la hauteur de la caméra
-*/
 
         minX = planeBounds.min.x * planeScale.x; // on multiplie par localScale car on l'a modifié dans AutoTextureSize
         maxX = planeBounds.max.x * planeScale.x;

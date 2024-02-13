@@ -13,9 +13,9 @@ public class AutoTextureSize : MonoBehaviour
             if (texture != null)
             {
                 transform.localScale = new Vector3(
-                    texture.width / 100.0f, // Adjust scale factor as needed
+                    texture.width / 100.0f, // on peut ajuster au besoin
                     1.0f,
-                    texture.height / 100.0f // Adjust scale factor as needed
+                    texture.height / 100.0f
                 );
             }
         }
