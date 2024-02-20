@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MenuTogglerScript : MonoBehaviour
 {
-    public GameObject[] allMenus; // Ajoutez ici tous les menus que vous souhaitez gérer
+    public GameObject[] allMenus; // je rajoute dans Unity tous les menus à gérer
 
     void Update()
     {
