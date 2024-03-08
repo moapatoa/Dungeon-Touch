@@ -559,8 +559,14 @@ $RECYCLE.BIN/
 # DAZ files
 Assets/Daz/
 Assets/Daz/*
+Assets/Daz3D/DiffusionProfiles/
+Assets/Daz3D/Resources/
+Assets/Daz3D/Scripts/
+Assets/Daz3D/Shaders/
+Assets/Daz3D/Vendors/
 Assets/Daz3D/Wen42/
 Assets/Daz3D/Wen42/Textures/
+Assets/Daz3D/Wen42/Wen42.fbx
 
 # others
 Assets/Models/*
