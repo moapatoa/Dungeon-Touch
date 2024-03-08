@@ -555,3 +555,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# DAZ files
+Assets/Daz/
