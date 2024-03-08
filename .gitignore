@@ -557,8 +557,8 @@ $RECYCLE.BIN/
 *.swp
 
 # DAZ files
-Assets/Daz/
-Assets/Daz/*
+Assets/Daz3D/
+Assets/Daz3D/*
 Assets/Daz3D/DiffusionProfiles/
 Assets/Daz3D/Resources/
 Assets/Daz3D/Scripts/
