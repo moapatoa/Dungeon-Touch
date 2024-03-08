@@ -7,10 +7,15 @@ using UnityEngine.UIElements;
 public class MoveCam : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
-    public float zoomSpeed = 5.0f;
+    public float zoomSpeed = 8.0f;
     public Transform plane;
     public Renderer planeRenderer; // Références au plan
     public float minYMultiplier = 1.0f; // petit facteur arbitraire pour ajuster la limite du déplacement vertical lors du zoom
+    public float rotationSpeed = 1.0f;
+    private bool isRotating = false;
+    private Vector3 lastMousePosition;
+    private Quaternion initialRotation;
+
 
     private float minX, maxX, minZ, maxZ, minY, maxY, tanFieldAngleX, tanFieldAngleZ;
 
@@ -30,23 +35,20 @@ public class MoveCam : MonoBehaviour
         tanFieldAngleZ = Mathf.Tan(Camera.main.fieldOfView * Mathf.Deg2Rad / 2.0f);
         tanFieldAngleX = Mathf.Tan(Camera.VerticalToHorizontalFieldOfView(Camera.main.fieldOfView, Camera.main.aspect) * Mathf.Deg2Rad / 2.0f);
         maxY = Mathf.Min(planeBounds.size.z * planeScale.z / (2 * tanFieldAngleZ), planeBounds.size.x * planeScale.x / (2 * tanFieldAngleX));
+
+        // on conserve la rotation initiale de la caméra
+        initialRotation = transform.rotation;
     }
+
     void Update()
     {
-        // Déplacement des caméras avec les touches du clavier (flèches)
+        // Déplacement des caméras avec les touches du clavier (flèches et zqsd (merci l'inmput manager de Unity))
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(horizontal, 0.0f, vertical) * moveSpeed * Time.deltaTime * Mathf.Sqrt(transform.position.y / 3.0f);
 
-        // Déplacement des caméras avec les touches du clavier (ZQSD) (en fait en WASD ici car Unity lance par défaut un clavier anglais... je verrai plus tard la modification)
-        float moveUp = Input.GetKey("w") ? 1.0f : 0.0f;
-        float moveDown = Input.GetKey("s") ? -1.0f : 0.0f;
-        float moveLeft = Input.GetKey("a") ? -1.0f : 0.0f;
-        float moveRight = Input.GetKey("d") ? 1.0f : 0.0f;
-
-        Vector3 directionalMovement = new Vector3(moveLeft + moveRight, 0.0f, moveUp + moveDown) * moveSpeed * Time.deltaTime * Mathf.Sqrt(transform.position.y / 3.0f);
-        Vector3 newPosition = transform.position + movement + directionalMovement;
+        Vector3 newPosition = transform.position + movement;
 
         // Limiter la position aux bords du plan
         newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
@@ -72,5 +74,40 @@ public class MoveCam : MonoBehaviour
         newZoomPosition.z = Mathf.Clamp(newZoomPosition.z, minZ + newZoomPosition.y * tanFieldAngleZ, maxZ - newZoomPosition.y * tanFieldAngleZ);
 
         transform.position = newZoomPosition;
+
+
+
+
+        // Rotation de la caméra avec le clic droit
+        if (Input.GetMouseButtonDown(1))
+        {
+            isRotating = true;
+            lastMousePosition = Input.mousePosition; // on enregistre la position de la souris
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            isRotating = false;
+        }
+
+        if (isRotating)
+        {
+            Vector3 deltaMousePosition = Input.mousePosition - lastMousePosition; // la différence entre la position actuelle et la précédente (frame pracédente) nous donne le vecteur
+
+            // On définit une rotation en fonction du vecteur de différence
+            float rotationX = -deltaMousePosition.y * rotationSpeed;
+            float rotationY = deltaMousePosition.x * rotationSpeed;
+
+            // On applique la rotation à la caméra
+            transform.Rotate(Vector3.up, rotationY, Space.World);
+            transform.Rotate(Vector3.right, rotationX, Space.Self);
+
+            lastMousePosition = Input.mousePosition;
+        }
+
+        // Réinitialiser la rotation de la caméra
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            transform.rotation = initialRotation;
+        }
     }
 }
