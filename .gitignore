@@ -557,6 +557,6 @@ $RECYCLE.BIN/
 *.swp
 
 # DAZ files
-Assets/Daz/
+Assets/Daz/*
 Assets/Daz3D/Wen42/
 Assets/Daz3D/Wen42/Textures/
