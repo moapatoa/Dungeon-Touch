@@ -4,8 +4,13 @@ using UnityEngine.UI;
 public class MenuButton : MonoBehaviour
 {
     public GameObject menuPanel;
+    public GameObject menuButton;
+    public GameObject backButton;
+    public GameObject[] menuSections;
+    // rajouter toutes les parties du menu au fur et à mesure
+
     // public CloseMenuOnClickOutside closeMenuScript;
-    private bool isMenuVisible = false;
+    private bool isVisible = false;
 
     void Start()
     {
@@ -19,10 +24,12 @@ public class MenuButton : MonoBehaviour
 
     void ToggleMenu()
     {
-        isMenuVisible = !isMenuVisible;
-        menuPanel.SetActive(isMenuVisible);
+        isVisible = !isVisible;
+        //menuPanel.SetActive(isVisible);
+        menuButton.SetActive(isVisible);
+        //backButton.SetActive(isVisible);
         // Il faut également activer/désactiver le script CloseMenuOnClickOutside si on l'utilise
-        // closeMenuScript.enabled = isMenuVisible;
+        // closeMenuScript.enabled = isVisible;
     }
 
     void OnClick()
@@ -31,9 +38,17 @@ public class MenuButton : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (menuButton.activeInHierarchy)
         {
-            ToggleMenu();
+            menuPanel.SetActive(false);
+            backButton.SetActive(false);
+            foreach (GameObject i in menuSections)
+            {
+                i.SetActive(false);
+            }
+
         }
     }
 }
+
+// penser à regarder le script "button", à la rigueur le copier et modifier légèrement sur certains boutons (peut être à l'origine du bug du double-clic)

@@ -25,14 +25,3 @@ public class ModelGridFiller : MonoBehaviour
         }
     }
 }
-
-public class ModelInstantiation : MonoBehaviour
-{
-    public GameObject modelPrefab;
-
-    public void SpawnModel()
-    {
-        // On instancie le prefab de notre modèle 3D lors du clic
-        Instantiate(modelPrefab, transform.position, Quaternion.identity);
-    }
-}

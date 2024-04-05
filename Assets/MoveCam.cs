@@ -15,6 +15,8 @@ public class MoveCam : MonoBehaviour
     private bool isRotating = false;
     private Vector3 lastMousePosition;
     private Quaternion initialRotation;
+    private RightClickKiller rightClickKiller;
+
 
 
     private float minX, maxX, minZ, maxZ, minY, maxY, tanFieldAngleX, tanFieldAngleZ;
@@ -38,6 +40,10 @@ public class MoveCam : MonoBehaviour
 
         // on conserve la rotation initiale de la caméra
         initialRotation = transform.rotation;
+
+
+        GameObject scriptoferum = GameObject.Find("Scriptoferum");
+        rightClickKiller = scriptoferum.GetComponent<RightClickKiller>();
     }
 
     void Update()
@@ -79,10 +85,10 @@ public class MoveCam : MonoBehaviour
 
 
         // Rotation de la caméra avec le clic droit
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && rightClickKiller.isRightClickEnabled)
         {
             isRotating = true;
-            lastMousePosition = Input.mousePosition; // on enregistre la position de la souris
+            lastMousePosition = Input.mousePosition; // On enregistre la position de la souris
         }
         else if (Input.GetMouseButtonUp(1))
         {
@@ -91,7 +97,7 @@ public class MoveCam : MonoBehaviour
 
         if (isRotating)
         {
-            Vector3 deltaMousePosition = Input.mousePosition - lastMousePosition; // la différence entre la position actuelle et la précédente (frame pracédente) nous donne le vecteur
+            Vector3 deltaMousePosition = Input.mousePosition - lastMousePosition; // La différence entre la position actuelle et la précédente (frame pracédente) nous donne le vecteur
 
             // On définit une rotation en fonction du vecteur de différence
             float rotationX = -deltaMousePosition.y * rotationSpeed;
@@ -105,7 +111,7 @@ public class MoveCam : MonoBehaviour
         }
 
         // Réinitialiser la rotation de la caméra
-        if (Input.GetKeyDown(KeyCode.Delete))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
             transform.rotation = initialRotation;
         }

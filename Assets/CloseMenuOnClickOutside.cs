@@ -28,4 +28,4 @@ public class CloseMenuOnClickOutside : MonoBehaviour
         }
     }
 }
-// en vrai je vais pas l'utiliser ça va être galère avec les 2 écrans
+// Finalement je ne vais pas l'utiliser ça va être galère avec les 2 écrans
